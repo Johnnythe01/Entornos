@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi tabla</title>
+    <title>Tabla 1</title>
 </head>
 <body>
-    <caption>Tabla con combinación de filas y columnas</caption>
     <table border="1">
+    <caption>Tabla con combinación de filas y columnas</caption>
         <tr>
             <th>celda 1</th>
             <th>celda 2</th>
@@ -16,11 +16,15 @@
         </tr>
         <tr>
             <td rowspan="5">celda 5</td>
+            <td>celda 6</td>
+            <td colspan="2">celda 7</td>
         </tr>
-        <td>celda 6</td>
-        <td colspan="2">celda 7</td>
-        <tr><td>celda 8</td></tr><td>celda 9</td>
-        <td>celda 9</td>
+        <tr>
+            <td>celda 8</td>
+            <td>celda 9</td>
+            <td rowspan="2">celda 10</td>
+        </tr>
+<tr><td colspan="2">celda 11</td></tr>
     </table>
 </body>
 </html>
