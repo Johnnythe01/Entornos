@@ -8,6 +8,6 @@ Algoritmo tercero
 	FinSi
 	Si B>A Entonces Escribir "El segundo valor es mayor"
 	FinSi
-	Si A=B Escribir "Ambos números son iguales."
+	Si A=B Escribir "Ambos nï¿½meros son iguales."
 	FinSi
 FinAlgoritmo
