@@ -7,4 +7,4 @@ if A > B and A > C:
 elif B > A and B > C:
     print("El segundo valor es mayor")
 else:
-    print("El tercer valor es mayor")
+    print("El tercer valor es mayor") 

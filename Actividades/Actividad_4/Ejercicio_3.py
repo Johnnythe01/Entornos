@@ -6,4 +6,4 @@ if A > B:
 elif B > A:
     print("El segundo valor es mayor")
 else:
-    print("Ambos números son iguales")
+    print("Ambos números son iguales") 

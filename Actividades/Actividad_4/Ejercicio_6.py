@@ -8,4 +8,4 @@ else:
     cuadrado = A * A
     print(f"El cuadrado de {A} es: {cuadrado}")
     raiz_cuadrada = math.sqrt(A)
-    print(f"La raíz cuadrada de {A} es: {raiz_cuadrada}")
+    print(f"La raíz cuadrada de {A} es: {raiz_cuadrada}") 

@@ -14,4 +14,4 @@ if B != 0:
     Resultado = A / B
     print("El resultado de la división es:", Resultado)
 else:
-    print("No se puede dividir por cero.")
+    print("No se puede dividir por cero.") 
