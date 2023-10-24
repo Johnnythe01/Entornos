@@ -1,5 +1,7 @@
-A = input("Escriba lo que desee: ")
-B = input("Escriba lo que desee: ")
-
-print("A:", A)
-print("B:", B)
+Algoritmo algoritmo1
+Escribir "Escriba lo que desee"
+Leer A
+Escribir "Escriba lo que desee"
+Leer B
+Mostrar A,B
+FinAlgoritmo

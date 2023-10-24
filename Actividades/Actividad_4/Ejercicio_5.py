@@ -7,4 +7,4 @@ if A < 0:
 else:
     resultado = A + B + C
 
-print("El resultado es:", resultado)
+print("El resultado es:", resultado) 
