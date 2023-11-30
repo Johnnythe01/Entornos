@@ -3,8 +3,8 @@ import pygame
 pygame.init()
 pantalla = pygame.display.set_mode((800, 600))
 
-avion = pygame.image.load("avion.png")
-avion = pygame.transform.scale(avion, (90,30))
+imagen_avion = pygame.image.load("Actividades/Space_Invaders/avion.png")
+avion = pygame.transform.scale(imagen_avion, (90,30))
 #avion_rect = avion.get_rect()
 
 salir = False
@@ -30,8 +30,8 @@ while not salir:
     # gestionar cambios
     pantalla.fill((0,15,80))
 
-    pygame.draw.rect(pantalla, (255,255,255), pygame.Rect(posIzda,posTop,60,60))
-    pantalla.blit(avion, (posTop, PosIzda))
+    #pygame.draw.rect(pantalla, (255,255,255), pygame.Rect(posIzda,posTop,60,60))
+    pantalla.blit(avion, (posIzda, posTop))
     # redibujar el juego
     pygame.display.flip()
 
