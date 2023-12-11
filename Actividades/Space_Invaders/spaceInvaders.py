@@ -1,5 +1,5 @@
 import pygame
-from Elementos import Nave
+from Elementos import Nave, Fondo
 
 pygame.init()
 pantalla = pygame.display.set_mode((800, 600))
@@ -10,7 +10,7 @@ salir = False
 
 nave = Nave()
 
-
+fondo = Fondo()
 while not salir:
     reloj.tick(60)
     # gestionar eventos
@@ -27,8 +27,10 @@ while not salir:
         nave.moverArriba()
     if teclas[pygame.K_DOWN]:
         nave.moverAbajo()
-    pantalla.fill((0, 15, 80))
 
+    #gestionar cambios
+    #pantalla.fill((0, 15, 80))
+    fondo.dibujar()
     # pygame.draw.rect(pantalla, (255,255,255), pygame.Rect(posIzda,posTop,60,60))
     nave.dibujar()
     # redibujar el juego
