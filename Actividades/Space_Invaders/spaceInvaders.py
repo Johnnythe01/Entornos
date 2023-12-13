@@ -1,5 +1,5 @@
 import pygame
-from Elementos import Nave, Fondo
+from elementos import Nave, Fondo
 
 pygame.init()
 pantalla = pygame.display.set_mode((800, 600))
