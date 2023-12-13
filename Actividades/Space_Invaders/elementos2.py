@@ -1,9 +1,9 @@
 import pygame
-#from pygame.sprite import _Group
+from pygame.sprite import Group
 
 class Nave(pygame.sprite.Sprite):
     # constructor
-    def __init__(self, posicion) -> None:
+    def __init__(self, posicion):
         super().__init__()
         # cargamos la imagen
         self.image = pygame.image.load("avion.png")
@@ -13,7 +13,7 @@ class Nave(pygame.sprite.Sprite):
         self.rect.topleft = posicion
 
         # update
-        def update(self, *args: any, **kwargs: any) -> None:
+        def update(self, *args: any, **kwargs: any):
             teclas = args[0]
             if teclas[pygame.K_LEFT]:
                 self.rect.x -= 2

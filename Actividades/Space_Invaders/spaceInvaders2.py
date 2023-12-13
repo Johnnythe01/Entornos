@@ -20,9 +20,9 @@ nave = elementos2.Nave(posicion)
 
 # creamos un grupo de sprites
 grupo_sprites = pygame.sprite.Group(nave)
-grupo_sprites = pygame.sprite.Group(elementos2.Nave(100,100))
-grupo_sprites = pygame.sprite.Group(elementos2.Nave(300,100))
-grupo_sprites = pygame.sprite.Group(elementos2.Nave(400,100))
+grupo_sprites.add(elementos2.Nave((100,100)))
+grupo_sprites.add(elementos2.Nave((300,100)))
+grupo_sprites.add(elementos2.Nave((400,100)))
 
 # bucle pricipal
 while running:
@@ -33,15 +33,15 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-            #capturamos las teclas
-            teclas = pygame.key.get_pressed
+    #capturamos las teclas
+    teclas = pygame.key.get_pressed()
 
     # pintaremos
     # primero el fondo blanco
     pantalla.fill((255,255,255))
     # segundo los sprites
-    grupo_sprites.update()
-    grupo_sprites.draw()
+    grupo_sprites.update(teclas)
+    grupo_sprites.draw(pantalla)
 
     # redibujar la pantalla
     pygame.display.flip()
