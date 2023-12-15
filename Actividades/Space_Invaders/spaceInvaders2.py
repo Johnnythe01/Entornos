@@ -1,5 +1,6 @@
 import pygame
 import elementos2
+import random
 
 # inicializamos el juego
 pygame.init()
@@ -24,6 +25,12 @@ grupo_sprites.add(elementos2.Nave((100,100)))
 grupo_sprites.add(elementos2.Nave((300,100)))
 grupo_sprites.add(elementos2.Nave((400,100)))
 
+enemigo = elementos2.Enemigo((50,50))
+grupo_sprites.add(enemigo)
+
+#crear una variable que almacene la última vez que se creó un enemigo
+ultimo_enemigo_creado = 0
+
 # bucle pricipal
 while running:
     # limitamos el bucle a framerate que hemos definido
@@ -33,6 +40,14 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+    # creacion de enemigos
+    momento_actual = pygame.time.get_ticks()
+    if (momento_actual > ultimo_enemigo_creado + 60000):
+        coordX = random.randint(0,pantalla.get_width())
+        coordY = 0
+        grupo_sprites.add(elementos2.Enemigo((coordX, coordY)))
+        ultimo_enemigo_creado = momento_actual
     #capturamos las teclas
     teclas = pygame.key.get_pressed()
 
