@@ -5,7 +5,7 @@ class Nave(pygame.sprite.Sprite):
     def __init__(self, posicion):
         super().__init__()
 
-        imagen = [pygame.image.load("avion1.png"), pygame.image.load("avion2.png"), ]
+        imagen = [pygame.image.load("avion.png"), pygame.image.load("avion2.png"), ]
         self.imagennave = [pygame.transform.scale(imagen[0], (60, 60)), pygame.transform.scale(imagen[1], (60, 60))]
         self.indicenave = 0
         self.image = self.imagennave[self.indicenave]
