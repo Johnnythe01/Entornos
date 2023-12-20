@@ -25,6 +25,13 @@ grupo_sprites.add(elementos2.Nave((100,100)))
 grupo_sprites.add(elementos2.Nave((420,100)))
 grupo_sprites.add(elementos2.Nave((300,100)))
 
+grupo_sprites_todos = pygame.sprite.Group()
+grupo_sprites_enemigos = pygame.sprite.Group()
+grupo_sprites_balas = pygame.sprite.Group()
+
+grupo_sprites_todos.add(elementos2.Fondo((0,0)))
+grupo_sprites_todos.add(nave)
+
 enemigo = elementos2.Enemigo((50,50))
 grupo_sprites.add(enemigo)
 
@@ -41,25 +48,33 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    # creacion de enemigos
+    #creacion de enemigos
     momento_actual = pygame.time.get_ticks()
     if (momento_actual > ultimo_enemigo_creado + 6000):
         coordX = random.randint(0,pantalla.get_width())
         coordY = -200
+        # creamos el enemigo
+        grupo_sprites_todos.add(enemigo)
+        # lo añadimos a los dos grupos: todos y enemigos
         grupo_sprites.add(elementos2.Enemigo((coordX, coordY)))
+        grupo_sprites_enemigos.add(enemigo)
+        # actualizamos el momento del último enemigo creado
         ultimo_enemigo_creado = momento_actual
     
 
     #capturamos las teclas
     teclas = pygame.key.get_pressed()
+    # if teclas[pygame.K_SPACE]:
+    #     nave.disparar(grupo_sprites_todos)
 
     # pintaremos
     # primero el fondo blanco
     pantalla.fill((255,255,255))
 
     # segundo los sprites
-    grupo_sprites.update(teclas)
+    grupo_sprites.update(teclas,grupo_sprites_todos,grupo_sprites_balas)
     grupo_sprites.draw(pantalla)
+    grupo_sprites_todos
 
     # redibujar la pantalla
     pygame.display.flip()
