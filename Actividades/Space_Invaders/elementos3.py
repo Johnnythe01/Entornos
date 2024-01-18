@@ -12,7 +12,7 @@ class Nave(pygame.sprite.Sprite):
         self.contador_imagen = 0
         self.rect = self.image.get_rect()
         #actualizamos la posicion del rectangulo para que coincida con la posicion
-        self.rect.topleft = posicion
+        self.rect.center = posicion
         self.ultimoDisparo = 0
     
     #update
@@ -26,6 +26,10 @@ class Nave(pygame.sprite.Sprite):
             Nave.moverIzquierda(self)
         if teclas[pygame.K_RIGHT]:
             Nave.moverDerecha(self)
+        if teclas[pygame.K_UP]:
+            Nave.moverArriba(self)
+        if teclas[pygame.K_DOWN]:
+            Nave.moverAbajo(self)
         #gestionamos la animación
         self.contador_imagen = (self.contador_imagen + 1) % 40
         self.indicenave = self.contador_imagen // 20
@@ -47,6 +51,16 @@ class Nave(pygame.sprite.Sprite):
         limite = 0
         self.rect.x = max(self.rect.x, limite)
 
+    def moverArriba(self):
+        self.rect.y -= 2
+        limite = 0
+        self.rect.x = max(self.rect.y, limite)
+
+    def moverAbajo(self):
+        self.rect.y += 2
+        limite = 0
+        self.rect.x = max(self.rect.y, limite)
+
     def disparar(self, grupo_sprites_todos, grupo_sprites_balas):
         momento_actual = pygame.time.get_ticks()
         if momento_actual > self.ultimoDisparo + 200:
@@ -62,8 +76,9 @@ class Enemigo(pygame.sprite.Sprite):
     def __init__(self, posicion):
         super().__init__()
 
-        imagen = pygame.image.load("avion2.png")
+        imagen = pygame.image.load("ufo1.png")
         self.image = pygame.transform.rotate(imagen, 180)
+        self.image = pygame.transform.scale(self.image, (60, 60))
         #creamos el rect
         self.rect = self.image.get_rect()
         #actualizamos la posicion del rectangulo para que coincida con la posicion
@@ -95,6 +110,7 @@ class Bala(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load("laser.png")
         self.mask = pygame.mask.from_surface(self.image)
+        self.image = pygame.transform.scale(self.image, (60, 60))
         #self.image = pygame.Surface((5,10))
         #self.image.fill((255,0,0))
         self.rect = self.image.get_rect()

@@ -1,5 +1,5 @@
 import pygame
-import elementos2
+import elementos3
 import random
 #iniciamos el juego
 pygame.init()
@@ -15,7 +15,7 @@ FPS = 60
 #booleano de control
 running = True
 posicion = (200,200)
-nave = elementos2.Nave(posicion)
+nave = elementos3.Nave(posicion)
 
 #creamos un grupo de sprites
 
@@ -30,10 +30,10 @@ grupo_sprites_todos = pygame.sprite.Group()
 grupo_sprites_enemigos = pygame.sprite.Group()
 grupo_sprites_balas = pygame.sprite.Group()
 
-grupo_sprites_todos.add(elementos2.Fondo((0,0)))
+grupo_sprites_todos.add(elementos3.Fondo((0,0)))
 grupo_sprites_todos.add(nave)
 
-enemigo  = elementos2.Enemigo((50,50))
+enemigo  = elementos3.Enemigo((50,50))
 grupo_sprites_enemigos.add(enemigo)
 
 #crear una variable que almacene la ultima vez que se creo un enemigo
@@ -54,7 +54,7 @@ while running:
     momento_actual = pygame.time.get_ticks()
     if (momento_actual > ultimo_enemigo_creado + 5000):
         X = random.randint(0, 600)
-        enemigo = elementos2.Enemigo((coordX, coordY))
+        enemigo = elementos3.Enemigo((coordX, coordY))
         grupo_sprites_todos.add(enemigo)
         grupo_sprites_enemigos.add(enemigo)
         ultimo_enemigo_creado = momento_actual
