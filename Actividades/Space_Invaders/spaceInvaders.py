@@ -17,7 +17,6 @@ while not salir:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             salir = True
-
     teclas = pygame.key.get_pressed()
     if teclas[pygame.K_LEFT]:
         nave.moverIzquierda()
@@ -27,7 +26,8 @@ while not salir:
         nave.moverArriba()
     if teclas[pygame.K_DOWN]:
         nave.moverAbajo()
-
+     
+    print(teclas)
     #gestionar cambios
     #pantalla.fill((0, 15, 80))
     fondo.dibujar()

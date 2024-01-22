@@ -4,7 +4,7 @@ import math
 class Nave:
     def __init__(self) -> None:
         self.x = 400
-        self.y = 500
+        self.y = 100
         imagenes_cargadas = [pygame.image.load("Actividades/Space_Invaders/avion.png"), pygame.image.load("Actividades/Space_Invaders/avion2.png")]
         self.imagenes = [pygame.transform.scale(imagenes_cargadas[0], (60,60)), pygame.transform.scale(imagenes_cargadas[1], (60,60))]
         self.contador = 0
@@ -18,15 +18,20 @@ class Nave:
     def moverIzquierda(self):
         self.x -= 10
         pantalla = pygame.display.get_surface()
-        limite = 0
+        limite = pantalla.get_width()
         self.x = max(self.x, limite)
 
     def moverAbajo(self):
         self.y += 10
-
+        pantalla = pygame.display.get_surface()
+        limite = pantalla.get_height()
+        self.y = max(self.y, limite)
     def moverArriba(self):
         self.y -= 10
-
+        pantalla = pygame.display.get_surface()
+        limite = pantalla.get_height()
+        self.y = max(self.y, limite)
+       
     def dibujar(self):
         #aumento el contador
         self.contador = (self.contador + 1) % 40
@@ -35,7 +40,7 @@ class Nave:
         # seleccionar la imagen que toca
         seleccionada = self.contador // 20
         # dibujar imagen
-        pantalla.blit(self.imagenes[seleccionada], (self.x, self.y))
+        pantalla.blit(self.imagenes[seleccionada], (self.x, self.y)) # quito seleccionada 
 
 class Fondo:
     def __init__(self) -> None:
