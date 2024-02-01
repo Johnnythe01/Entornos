@@ -6,7 +6,7 @@ class Nave(pygame.sprite.Sprite):
         super().__init__()
         # Cargamos la imagen
         imagen = [pygame.image.load("avion.png"), pygame.image.load("avion2.png"), ]
-        self.imagennave = [pygame.transform.scale(imagen[0], (50, 60)), pygame.transform.scale(imagen[1], (50, 60))]
+        self.imagennave = [pygame.transform.scale(imagen[0], (50, 50)), pygame.transform.scale(imagen[1], (50, 50))]
         self.indicenave = 0
         self.image = self.imagennave[self.indicenave]
         self.contador_imagen = 0
@@ -38,6 +38,16 @@ class Nave(pygame.sprite.Sprite):
             self.rect.x +=2
             pantalla = pygame.display.get_surface()
             self.rect.x = min(pantalla.get_width()-self.image.get_width(), self.rect.x)
+        
+        if teclas[pygame.K_UP]:
+            self.rect.y -= 2
+            self.rect.y = max(0, self.rect.y)
+
+        if teclas[pygame.K_DOWN]:
+            self.rect.y +=2
+            pantalla = pygame.display.get_surface()
+            self.rect.y = min(pantalla.get_height()-self.image.get_height(), self.rect.y)
+        
         # Gestionamos la animación
         self.contador_imagen = (self.contador_imagen + 1) % 40
         self.indicenave = self.contador_imagen // 20
@@ -57,13 +67,14 @@ class Enemigo(pygame.sprite.Sprite):
         super().__init__()
         # Cargamos la imagen
         imagen = pygame.image.load("ufo1.png")
-        self.image = pygame.transform.scale(imagen, (60,50))
+        self.image = pygame.transform.scale(imagen, (50,50))
         self.image = pygame.transform.rotate(self.image, 180)
         self.mask = pygame.mask.from_surface(self.image)
         # Creamos un rectangulo a partir de la imagen
         self.rect = self.image.get_rect()
         # Actualizamos la posicion del rectangulo para que coincida con la posicion
         self.rect.topleft = posicion
+        self.vida = 1  # Inicializamos la vida del enemigo
 
     def update(self, *args: any, **kwargs: any):
         self.rect.y += 1
@@ -72,12 +83,21 @@ class Enemigo(pygame.sprite.Sprite):
         if (self.rect.y > pantalla.get_height()):
             self.kill()
 
+        # Creamos la colision
+            self.vida -= 1
+            print(self.vida)
+            if self.vida == 0:
+                self.kill()
+
         # Capturamos el args[2] (Argumento 2) -> grupo_sprite_balas
         grupo_sprites_balas = args[2]
         bala_colision = pygame.sprite.spritecollideany(self, grupo_sprites_balas, pygame.sprite.collide_mask)
         if bala_colision:
             self.kill()
             bala_colision.kill()
+            print("Vida del enemigo:", self.vida)
+            if self.vida <= 0:
+                self.kill()  # Eliminamos el enemigo si su vida llega a 0
 
 class Fondo(pygame.sprite.Sprite):
     def __init__(self, posicion)-> None:
