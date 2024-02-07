@@ -5,12 +5,9 @@ class Nave(pygame.sprite.Sprite):
     def __init__(self, posicion):
         super().__init__()
         # Cargamos la imagen
-        imagen = pygame.image.load("ambulancia.png")
-        self.imagennave = pygame.transform.scale(imagen, (50, 50))
-        imagen2 = pygame.image.load("ambulanciaizq.png")
-        self.imagennave2 = pygame.transform.scale(imagen, (50, 50))
+        self.imagennave = pygame.transform.scale(pygame.image.load("ambulancia.png"), (50, 50))
+        self.imagennave2 = pygame.transform.scale(pygame.image.load("ambulanciaizq.png"), (50, 50))
         self.image = self.imagennave
-        self.contador_imagen = 0
         # Creamos un rectangulo a partir de la iamgen
         self.rect = self.image.get_rect()
         # Actualizamos la posicion del rectangulo para que coincida con la posicion
@@ -31,21 +28,14 @@ class Nave(pygame.sprite.Sprite):
         if teclas[pygame.K_LEFT]:
             self.rect.x -= 4
             self.rect.x = max(0, self.rect.x)
-            self.image = self.imagennave2
-            # Disparar
+            self.image = self.imagennave2  # Use the left-facing image
+        elif teclas[pygame.K_RIGHT]:
+            self.rect.x += 4
+            self.rect.x = min(pantalla.get_width() - self.image.get_width(), self.rect.x)
+            self.image = self.imagennave  # Use the right-facing image
+
         if teclas[pygame.K_SPACE]:
             self.disparar(grupo_sprites_todos, grupo_sprites_balas)
-
-        if teclas[pygame.K_RIGHT]:
-            self.rect.x +=4
-            pantalla = pygame.display.get_surface()
-            self.rect.x = min(pantalla.get_width()-self.image.get_width(), self.rect.x)
-            self.image = self.imagennave
-            
-        # Gestionamos la animación
-        self.contador_imagen = (self.contador_imagen + 1) % 40
-        self.indicenave = self.contador_imagen // 20
-        self.image = self.imagennave[self.indicenave]
 
     def disparar(self, grupo_sprite_todos, grupo_sprite_balas):
         momento_actual = pygame.time.get_ticks()
@@ -60,9 +50,8 @@ class Enemigo(pygame.sprite.Sprite):
     def __init__(self, posicion):
         super().__init__()
         # Cargamos la imagen
-        imagen = pygame.image.load("ufo1.png")
+        imagen = pygame.image.load("bombacolor.png")
         self.image = pygame.transform.scale(imagen, (50,50))
-        self.image = pygame.transform.rotate(self.image, 180)
         self.mask = pygame.mask.from_surface(self.image)
         # Creamos un rectangulo a partir de la imagen
         self.rect = self.image.get_rect()
