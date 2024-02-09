@@ -22,6 +22,8 @@ class Nave(pygame.sprite.Sprite):
         grupo_sprites_todos = args[1]
         # Capturamos grupo sprites balas.
         grupo_sprites_balas = args[2]
+        # capturamos enemigo colision with my self 
+        grupo_sprite_enemigos = args[3]
         # Capturamos la pantalla
         pantalla = pygame.display.get_surface()
         # Gestionamos las teclas
@@ -81,7 +83,16 @@ class Enemigo(pygame.sprite.Sprite):
             print("Vida del enemigo:", self.vida)
             if self.vida <= 0:
                 self.kill()  # Eliminamos el enemigo si su vida llega a 0
-
+        
+        grupo_sprite_enemigos = args[3]
+        enemigo_colision = pygame.sprite.spritecollideany(self, grupo_sprite_enemigos, pygame.sprite.collide_mask)
+        if enemigo_colision:
+            self.kill()
+            enemigo_colision.kill()
+            print("Vida del enemigo:", self.vida)
+            if self.vida <= 0:
+                self.kill()  # Eliminamos el enemigo si su vida llega a
+                
 class Fondo(pygame.sprite.Sprite):
     def __init__(self, posicion)-> None:
         super().__init__()

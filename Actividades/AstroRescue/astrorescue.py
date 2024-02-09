@@ -59,6 +59,7 @@ while running:
         enemigo = rescElementos.Enemigo((cordX, cordY))
         grupo_sprite_todos.add(enemigo)
         grupo_sprite_enemigos.add(enemigo)
+        # grupo_sprite_enemigos.draw(enemigo)
         #Actualizamos el momento del ultimo enemigo creado
         ultimo_enemigo_creado = momento_actual
         
@@ -70,7 +71,7 @@ while running:
     
     #Pintamos
     pantalla.fill((255, 255, 255))
-    grupo_sprite_todos.update(teclas, grupo_sprite_todos, grupo_sprite_balas)
+    grupo_sprite_todos.update(teclas, grupo_sprite_todos, grupo_sprite_balas,grupo_sprite_enemigos)
     grupo_sprite_todos.draw(pantalla)
 
 
