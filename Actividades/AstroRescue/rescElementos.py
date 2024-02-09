@@ -91,8 +91,8 @@ class Enemigo(pygame.sprite.Sprite):
             enemigo_colision.kill()
             print("Vida del enemigo:", self.vida)
             if self.vida <= 0:
-                self.kill()  # Eliminamos el enemigo si su vida llega a
-                
+                self.kill()  # Nos eliminan si nuestra vida llega a 0
+
 class Fondo(pygame.sprite.Sprite):
     def __init__(self, posicion)-> None:
         super().__init__()
