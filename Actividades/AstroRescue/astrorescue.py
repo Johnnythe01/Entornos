@@ -10,6 +10,9 @@ pygame.init()
 tamaño = (800, 600)
 pantalla = pygame.display.set_mode(tamaño)
 
+# Creamos la puntuacion
+puntuacion = 0
+
 # Creamos un reloj para limitar el framerate
 reloj = pygame.time.Clock()
 FPS = 60
@@ -53,10 +56,16 @@ while running:
     # Detectar colisiones entre la nave y los enemigos
     nave.detectar_colisiones_nave_enemigos(grupo_sprite_enemigos)
 
+    # Detectar colisiones entre balas y enemigos
+    colisiones_balas_enemigos = pygame.sprite.groupcollide(grupo_sprite_balas, grupo_sprite_enemigos, True, True)
+
+    # Actualizar la puntuación por cada enemigo eliminado por una bala
+    for bala, enemigos in colisiones_balas_enemigos.items():
+        puntuacion += len(enemigos) * 100
+
         # Si nos eliminan, acaba la partida automáticamente
     if nave.vida <= 0:
         running = False
-
 
     # Creacion de enemigos
     momento_actual = pygame.time.get_ticks()
@@ -66,7 +75,7 @@ while running:
         # Creamos el enemigo y lo añadimos a los grupos.
         enemigo = rescElementos.Enemigo((cordX, cordY))
         grupo_sprite_todos.add(enemigo)
-        # grupo_sprite_enemigos.add(enemigo)
+        grupo_sprite_enemigos.add(enemigo)
 
         # Actualizamos el momento del ultimo enemigo creado
         ultimo_enemigo_creado = momento_actual
@@ -80,6 +89,11 @@ while running:
     pantalla.fill((255, 255, 255))
     grupo_sprite_todos.update(teclas, grupo_sprite_todos, grupo_sprite_balas,grupo_sprite_enemigos)
     grupo_sprite_todos.draw(pantalla)
+
+    # Dibujar la puntuación en la pantalla
+    fuente = pygame.font.Font(None, 36)
+    texto_puntuacion = fuente.render("Puntuación: " + str(puntuacion), True, (255, 255, 255))
+    pantalla.blit(texto_puntuacion, (10, 10))  
 
     # Redibujar la pantalla
     pygame.display.flip()
