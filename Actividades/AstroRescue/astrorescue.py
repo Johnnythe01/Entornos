@@ -1,7 +1,7 @@
 import pygame
 import rescElementos
 import random
-import pygame_menu
+#import pygame_menu
 
 # Iniciamos el juego
 pygame.init()
@@ -32,11 +32,11 @@ grupo_sprite_enemigos = pygame.sprite.Group()
 grupo_sprite_balas = pygame.sprite.Group()
 
 grupo_sprite_todos.add(rescElementos.Fondo((0,0)))
-grupo_sprite_todos.add(nave)
+grupo_sprite_todos.add(nave)  
 
-
-# enemigo = rescElementos.Enemigo((50,50))
-# grupo_sprites.add(enemigo)
+enemigo = rescElementos.Enemigo((50,50))
+grupo_sprite_todos.add(enemigo)
+grupo_sprite_enemigos.add(enemigo)
 # Creamos una variable que almacena la ultima vez que se creo un enemigo
 ultimo_enemigo_creado = 0
 frecuencia_creacion_enemigos = 2000
@@ -49,17 +49,25 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-            
+
+    # Detectar colisiones entre la nave y los enemigos
+    nave.detectar_colisiones_nave_enemigos(grupo_sprite_enemigos)
+
+        # Si nos eliminan, acaba la partida automáticamente
+    if nave.vida <= 0:
+        running = False
+
+
     # Creacion de enemigos
     momento_actual = pygame.time.get_ticks()
     if (momento_actual > ultimo_enemigo_creado + frecuencia_creacion_enemigos):
         cordX = random.randint(0, pantalla.get_width())
         cordY = -200
-        #Creamos el enemigo y lo añadismos a los grupos.
+        # Creamos el enemigo y lo añadimos a los grupos.
         enemigo = rescElementos.Enemigo((cordX, cordY))
         grupo_sprite_todos.add(enemigo)
-        grupo_sprite_enemigos.add(enemigo)
-        # grupo_sprite_enemigos.draw(enemigo)
+        # grupo_sprite_enemigos.add(enemigo)
+
         # Actualizamos el momento del ultimo enemigo creado
         ultimo_enemigo_creado = momento_actual
         
@@ -68,12 +76,10 @@ while running:
     # if teclas[pygame.K_SPACE]:
     #     nave.disparar(grupo_sprite_todos)
     
-    
     # Pintamos
     pantalla.fill((255, 255, 255))
     grupo_sprite_todos.update(teclas, grupo_sprite_todos, grupo_sprite_balas,grupo_sprite_enemigos)
     grupo_sprite_todos.draw(pantalla)
-
 
     # Redibujar la pantalla
     pygame.display.flip()

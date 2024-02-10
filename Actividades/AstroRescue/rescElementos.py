@@ -13,7 +13,17 @@ class Nave(pygame.sprite.Sprite):
         # Actualizamos la posicion del rectangulo para que coincida con la posicion
         self.rect.center = posicion
         self.ultimoDisparo = 0
+        self.vida = 3
     
+    def detectar_colisiones_nave_enemigos(self, grupo_enemigos):
+        colisiones_nave_enemigos = pygame.sprite.spritecollideany(self, grupo_enemigos)
+        if colisiones_nave_enemigos:
+            # Restamos vida a nave
+            self.vida -= 1
+            if self.vida <= 0:
+                # Si la vida de la nave llega a cero, eliminamos la nave
+                self.kill()
+
     # Update
     def update(self, *args: any, **kwargs: any):
         # Capturamos las teclas.
@@ -61,9 +71,10 @@ class Enemigo(pygame.sprite.Sprite):
         self.rect.topleft = posicion
         self.vida = 1  # Inicializamos la vida del enemigo
 
-    def update(self, *args: any, **kwargs: any):
+    def update(self, *args, **kwargs):
         self.rect.y += 1
-        # Capturamos la pantalla
+
+        # Verificamos si el enemigo ha salido de la pantalla
         pantalla = pygame.display.get_surface()
         if (self.rect.y > pantalla.get_height()):
             self.kill()
@@ -83,15 +94,6 @@ class Enemigo(pygame.sprite.Sprite):
             print("Vida del enemigo:", self.vida)
             if self.vida <= 0:
                 self.kill()  # Eliminamos el enemigo si su vida llega a 0
-        
-        grupo_sprite_enemigos = args[3]
-        enemigo_colision = pygame.sprite.spritecollideany(self, grupo_sprite_enemigos, pygame.sprite.collide_mask)
-        if enemigo_colision:
-            self.kill()
-            enemigo_colision.kill()
-            print("Vida del enemigo:", self.vida)
-            if self.vida <= 0:
-                self.kill()  # Nos eliminan si nuestra vida llega a 0
 
 class Fondo(pygame.sprite.Sprite):
     def __init__(self, posicion)-> None:
