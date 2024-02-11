@@ -31,7 +31,7 @@ class Nave(pygame.sprite.Sprite):
                     self.kill()
     
     def detectar_colisiones_nave_paracaidistas(self, grupo_paracaidistas):
-        colisiones_nave_paracaidistas = pygame.sprite.spritecollideany(self, grupo_paracaidistas)
+        colisiones_nave_paracaidistas = pygame.sprite.spritecollideany (self, grupo_paracaidistas)
 
     def update(self, *args: any, **kwargs: any):
         # Capturamos las teclas
@@ -104,7 +104,7 @@ class Enemigo(pygame.sprite.Sprite):
             bala_colision.kill()
             print("Vida del enemigo:", self.vida)
             if self.vida <= 0:
-                self.kill()  # Eliminamos el enemigo si su vida llega a 0
+                self.kill()
 
 class Paracaidista(pygame.sprite.Sprite):
     # Constructor
