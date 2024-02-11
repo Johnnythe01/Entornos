@@ -20,8 +20,9 @@ class Nave(pygame.sprite.Sprite):
         self.ultimoDisparo = 0
         self.vida = 3
     
-    def detectar_colisiones_nave_enemigos(self, grupo_enemigos):
-        for enemigo in grupo_enemigos:
+    def detectar_colisiones_nave_enemigos(self, grupo_sprite_enemigos):
+        colisiones_nave_enemigos = pygame.sprite.spritecollideany (self, grupo_sprite_enemigos)
+        for enemigo in grupo_sprite_enemigos:
             if pygame.sprite.collide_rect(self, enemigo):
             # Restamos vida a nave
                 self.vida -= 1
@@ -79,7 +80,7 @@ class Enemigo(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         # Actualizamos la posicion del rectangulo para que coincida con la posicion
         self.rect.topleft = posicion
-        self.vida = 100  # Inicializamos la vida del enemigo
+        self.vida = 1  # Inicializamos la vida del enemigo
 
     def update(self, *args, **kwargs):
         self.rect.y += 1

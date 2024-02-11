@@ -1,7 +1,7 @@
 import pygame
 import rescElementos
 import random
-#import pygame_menu
+import pygame_menu
 
 # Iniciamos el juego
 pygame.init()
@@ -9,6 +9,24 @@ pygame.init()
 # Creamos la pantalla
 tamaño = (800, 600)
 pantalla = pygame.display.set_mode(tamaño)
+
+def set_difficulty(value, difficulty):
+    # Do the job here !
+    pass
+
+def start_the_game():
+    # Do the job here !
+    pass
+
+menu = pygame_menu.Menu('Welcome', 400, 300,
+                       theme=pygame_menu.themes.THEME_BLUE)
+
+menu.add.text_input('Name :', default='John Doe')
+menu.add.selector('Difficulty :', [('Hard', 1), ('Easy', 2)], onchange=set_difficulty)
+menu.add.button('Play', start_the_game)
+menu.add.button('Quit', pygame_menu.events.EXIT)
+
+menu.mainloop(pygame.Surface)
 
 # Creamos la puntuacion
 puntuacion = 0
@@ -59,11 +77,12 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+    # teclas = pygame.key.get_pressed()
+
     # Detectar colisiones entre la nave y los enemigos + paracaidistas
     nave.detectar_colisiones_nave_enemigos(grupo_sprite_enemigos)
     nave.detectar_colisiones_nave_paracaidistas(grupo_sprite_paracaidistas)
 
-    # Detectar colisiones entre la nave y los paracaidistas
     colisiones_nave_paracaidistas = pygame.sprite.spritecollideany(nave, grupo_sprite_paracaidistas)
     if colisiones_nave_paracaidistas:
         # Eliminar al paracaidista al colisionar con la nave
@@ -72,6 +91,10 @@ while running:
     
     # Detectar colisiones entre enemigos y nave
     colisiones_nave_enemigos = pygame.sprite.spritecollideany(nave, grupo_sprite_enemigos)
+    if colisiones_nave_enemigos:
+        # Eliminar la nave al colisionar con el enemigo
+        nave.kill()
+
     # Detectar colisiones entre balas y enemigos
     colisiones_balas_enemigos = pygame.sprite.groupcollide(grupo_sprite_balas, grupo_sprite_enemigos, True, True)
     for bala, enemigos in colisiones_balas_enemigos.items():
@@ -81,8 +104,6 @@ while running:
     if nave.vida <= 0:
         running = False
 
-    # grupo_sprite_todos.update()
-
     # Creacion de enemigos
     momento_actual_enemigos = pygame.time.get_ticks()
     if (momento_actual_enemigos > ultimo_enemigo_creado + frecuencia_creacion_enemigos):
@@ -91,8 +112,8 @@ while running:
         # Creamos el enemigo y lo añadimos a los grupos.
         enemigo = rescElementos.Enemigo((cordX, cordY))
         grupo_sprite_todos.add(enemigo)
-        print("Enemigo creado en coordenadas:", cordX, cordY)
-        print("Cantidad de enemigos:", len(grupo_sprite_enemigos))
+        # print("Enemigo creado en coordenadas:", cordX, cordY)
+        # print("Cantidad de enemigos:", len(grupo_sprite_enemigos))
         # Actualizamos el momento del ultimo enemigo creado
         ultimo_enemigo_creado = momento_actual_enemigos
         
@@ -111,15 +132,15 @@ while running:
 
     # Capturamos las teclas
     teclas = pygame.key.get_pressed()
-    # if teclas[pygame.K_SPACE]:
-    #     nave.disparar(grupo_sprite_todos)
+    if teclas[pygame.K_SPACE]:
+        nave.disparar(grupo_sprite_todos, grupo_sprite_balas)
     
     # Pintamos
     pantalla.fill((255, 255, 255))
     grupo_sprite_todos.update(teclas, grupo_sprite_todos, grupo_sprite_balas, grupo_sprite_enemigos, grupo_sprite_paracaidistas)
     grupo_sprite_todos.draw(pantalla)
 
-    # Dibujar la puntuación en la pantalla
+    # Dibujar la puntuacion en la pantalla
     fuente = pygame.font.Font(None, 36)
     texto_puntuacion = fuente.render("Puntuación: " + str(puntuacion), True, (255, 255, 255))
     pantalla.blit(texto_puntuacion, (10, 10))  
