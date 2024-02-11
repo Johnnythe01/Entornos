@@ -33,16 +33,22 @@ nave = rescElementos.Nave(posicion)
 grupo_sprite_todos = pygame.sprite.Group()
 grupo_sprite_enemigos = pygame.sprite.Group()
 grupo_sprite_balas = pygame.sprite.Group()
+grupo_sprite_paracaidistas = pygame.sprite.Group()
 
 grupo_sprite_todos.add(rescElementos.Fondo((0,0)))
 grupo_sprite_todos.add(nave)  
 
+paracaidista = rescElementos.Paracaidista((100, 50))
 enemigo = rescElementos.Enemigo((50,50))
-grupo_sprite_todos.add(enemigo)
 grupo_sprite_enemigos.add(enemigo)
+grupo_sprite_paracaidistas.add(paracaidista)
 # Creamos una variable que almacena la ultima vez que se creo un enemigo
 ultimo_enemigo_creado = 0
 frecuencia_creacion_enemigos = 2000
+
+# Creamos una variable que almacena la ultima vez que se creo un paracaidista
+ultimo_paracaidista_creado = 0
+frecuencia_creacion_paracaidistas = 1000
 # Creamos el bucle principal
 while running:
     # limitamos el bucle al framerate que hemos definido
@@ -53,33 +59,56 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    # Detectar colisiones entre la nave y los enemigos
+    # Detectar colisiones entre la nave y los enemigos + paracaidistas
     nave.detectar_colisiones_nave_enemigos(grupo_sprite_enemigos)
+    nave.detectar_colisiones_nave_paracaidistas(grupo_sprite_paracaidistas)
 
+    # Detectar colisiones entre la nave y los paracaidistas
+    colisiones_nave_paracaidistas = pygame.sprite.spritecollideany(nave, grupo_sprite_paracaidistas)
+    if colisiones_nave_paracaidistas:
+        # Eliminar al paracaidista al colisionar con la nave
+        colisiones_nave_paracaidistas.kill() 
+        puntuacion += 100
+    
+    # Detectar colisiones entre enemigos y nave
+    colisiones_nave_enemigos = pygame.sprite.spritecollideany(nave, grupo_sprite_enemigos)
     # Detectar colisiones entre balas y enemigos
     colisiones_balas_enemigos = pygame.sprite.groupcollide(grupo_sprite_balas, grupo_sprite_enemigos, True, True)
-
-    # Actualizar la puntuación por cada enemigo eliminado por una bala
     for bala, enemigos in colisiones_balas_enemigos.items():
         puntuacion += len(enemigos) * 100
 
-        # Si nos eliminan, acaba la partida automáticamente
+    # Si nos eliminan, acaba la partida automaticamente
     if nave.vida <= 0:
         running = False
 
+    # grupo_sprite_todos.update()
+
     # Creacion de enemigos
-    momento_actual = pygame.time.get_ticks()
-    if (momento_actual > ultimo_enemigo_creado + frecuencia_creacion_enemigos):
+    momento_actual_enemigos = pygame.time.get_ticks()
+    if (momento_actual_enemigos > ultimo_enemigo_creado + frecuencia_creacion_enemigos):
         cordX = random.randint(0, pantalla.get_width())
         cordY = -200
         # Creamos el enemigo y lo añadimos a los grupos.
         enemigo = rescElementos.Enemigo((cordX, cordY))
         grupo_sprite_todos.add(enemigo)
-        grupo_sprite_enemigos.add(enemigo)
-
+        print("Enemigo creado en coordenadas:", cordX, cordY)
+        print("Cantidad de enemigos:", len(grupo_sprite_enemigos))
         # Actualizamos el momento del ultimo enemigo creado
-        ultimo_enemigo_creado = momento_actual
+        ultimo_enemigo_creado = momento_actual_enemigos
         
+    # Creacion de paracaidistas
+    momento_actual_paracaidistas = pygame.time.get_ticks()
+    if (momento_actual_paracaidistas > ultimo_paracaidista_creado + frecuencia_creacion_paracaidistas):
+        cordX = random.randint(0, pantalla.get_width())
+        cordY = -100
+        # Creamos el paracaidista y lo añadimos a los grupos.
+        paracaidista = rescElementos.Paracaidista((cordX, cordY))
+        grupo_sprite_todos.add(paracaidista)
+        grupo_sprite_paracaidistas.add(paracaidista)
+
+        # Actualizamos el momento del ultimo paracaidista creado
+        ultimo_paracaidista_creado = momento_actual_paracaidistas
+
     # Capturamos las teclas
     teclas = pygame.key.get_pressed()
     # if teclas[pygame.K_SPACE]:
@@ -87,7 +116,7 @@ while running:
     
     # Pintamos
     pantalla.fill((255, 255, 255))
-    grupo_sprite_todos.update(teclas, grupo_sprite_todos, grupo_sprite_balas,grupo_sprite_enemigos)
+    grupo_sprite_todos.update(teclas, grupo_sprite_todos, grupo_sprite_balas, grupo_sprite_enemigos, grupo_sprite_paracaidistas)
     grupo_sprite_todos.draw(pantalla)
 
     # Dibujar la puntuación en la pantalla

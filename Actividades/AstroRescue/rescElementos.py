@@ -1,4 +1,9 @@
 import pygame
+import pygame.sprite
+
+# Crear los grupos de sprites separados para enemigos y paracaidistas
+grupo_sprite_enemigos = pygame.sprite.Group()
+grupo_sprite_paracaidistas = pygame.sprite.Group()
 
 class Nave(pygame.sprite.Sprite):
     # Constructor
@@ -16,35 +21,40 @@ class Nave(pygame.sprite.Sprite):
         self.vida = 3
     
     def detectar_colisiones_nave_enemigos(self, grupo_enemigos):
-        colisiones_nave_enemigos = pygame.sprite.spritecollideany(self, grupo_enemigos)
-        if colisiones_nave_enemigos:
+        for enemigo in grupo_enemigos:
+            if pygame.sprite.collide_rect(self, enemigo):
             # Restamos vida a nave
-            self.vida -= 1
-            if self.vida <= 0:
-                # Si la vida de la nave llega a cero, eliminamos la nave
-                self.kill()
+                self.vida -= 1
+                if self.vida <= 0:
+                    # Si la vida de la nave llega a cero, eliminamos la nave
+                    self.kill()
+    
+    def detectar_colisiones_nave_paracaidistas(self, grupo_paracaidistas):
+        colisiones_nave_paracaidistas = pygame.sprite.spritecollideany(self, grupo_paracaidistas)
 
-    # Update
     def update(self, *args: any, **kwargs: any):
-        # Capturamos las teclas.
+        # Capturamos las teclas
         teclas = args[0]
-        # Capturamos grupo sprites todos.
+        # Capturamos grupo sprites todos
         grupo_sprites_todos = args[1]
-        # Capturamos grupo sprites balas.
+        # Capturamos grupo sprites balas
         grupo_sprites_balas = args[2]
-        # capturamos enemigo colision with my self 
+        # Capturamos grupo sprites enemigos 
         grupo_sprite_enemigos = args[3]
+        # Capturamos grupo sprites paracaidistas
+        grupo_sprite_paracaidistas = args[4]
+
         # Capturamos la pantalla
         pantalla = pygame.display.get_surface()
         # Gestionamos las teclas
         if teclas[pygame.K_LEFT]:
             self.rect.x -= 4
             self.rect.x = max(0, self.rect.x)
-            self.image = self.imagennave2  # Use the left-facing image
+            self.image = self.imagennave2
         elif teclas[pygame.K_RIGHT]:
             self.rect.x += 4
             self.rect.x = min(pantalla.get_width() - self.image.get_width(), self.rect.x)
-            self.image = self.imagennave  # Use the right-facing image
+            self.image = self.imagennave
 
         if teclas[pygame.K_SPACE]:
             self.disparar(grupo_sprites_todos, grupo_sprites_balas)
@@ -69,7 +79,7 @@ class Enemigo(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         # Actualizamos la posicion del rectangulo para que coincida con la posicion
         self.rect.topleft = posicion
-        self.vida = 1  # Inicializamos la vida del enemigo
+        self.vida = 100  # Inicializamos la vida del enemigo
 
     def update(self, *args, **kwargs):
         self.rect.y += 1
@@ -80,10 +90,10 @@ class Enemigo(pygame.sprite.Sprite):
             self.kill()
 
         # Creamos la colision
-            self.vida -= 1
-            print(self.vida)
-            if self.vida == 0:
-                self.kill()
+        # self.vida -= 1
+        # print(self.vida)
+        # if self.vida <= 0:
+        #     self.kill()
 
         # Capturamos el args[2] (Argumento 2) -> grupo_sprite_balas
         grupo_sprites_balas = args[2]
@@ -94,6 +104,28 @@ class Enemigo(pygame.sprite.Sprite):
             print("Vida del enemigo:", self.vida)
             if self.vida <= 0:
                 self.kill()  # Eliminamos el enemigo si su vida llega a 0
+
+class Paracaidista(pygame.sprite.Sprite):
+    # Constructor
+    def __init__(self, posicion):
+        super().__init__()
+        # Cargamos la imagen del paracaidista
+        imagen = pygame.image.load("paracaidista.png")
+        self.image = pygame.transform.scale(imagen, (50, 50))
+        self.mask = pygame.mask.from_surface(self.image)
+        # Creamos un rectángulo a partir de la imagen
+        self.rect = self.image.get_rect()
+        # Actualizamos la posición del rectángulo para que coincida con la posición
+        self.rect.topleft = posicion
+        self.puntos = 1
+
+    def update(self, *args, **kwargs):
+        self.rect.y += 1  # Movemos hacia abajo el paracaidista
+
+        # Verificamos si el paracaidista ha salido de la pantalla
+        pantalla = pygame.display.get_surface()
+        if self.rect.y > pantalla.get_height():
+            self.kill()  # Eliminamos el paracaidista si sale de la pantalla
 
 class Fondo(pygame.sprite.Sprite):
     def __init__(self, posicion)-> None:
