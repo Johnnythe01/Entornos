@@ -11,15 +11,15 @@ tamaño = (800, 600)
 pantalla = pygame.display.set_mode(tamaño)
 
 def set_difficulty(value, difficulty):
-    global velocidad_enemigos
-    global velocidad_paracaidistas
+    global frecuencia_creacion_enemigos
+    global frecuencia_creacion_paracaidistas
 
     if difficulty == 1:  # Difícil
-        velocidad_enemigos = 100
-        velocidad_paracaidistas = 100
+        frecuencia_creacion_enemigos = 500
+        frecuencia_creacion_paracaidistas = 6000
     elif difficulty == 2:  # Fácil
-        velocidad_enemigos = 1
-        velocidad_paracaidistas = 1
+        frecuencia_creacion_enemigos = 3000
+        frecuencia_creacion_paracaidistas = 4000
 
 def start_the_game():
     
@@ -38,11 +38,6 @@ def start_the_game():
     nave = rescElementos.Nave(posicion)
 
     # Creamos un grupo de sprites
-    #grupo_sprites = pygame.sprite.Group()
-    #grupo_sprites.add(rescElementos.Fondo())
-    #grupo_sprites.add(rescElementos.Nave((470,100)))
-    #grupo_sprites.add(rescElementos.Nave((200,100)))
-    #grupo_sprites.add(rescElementos.Nave((300,100)))
     grupo_sprite_todos = pygame.sprite.Group()
     grupo_sprite_enemigos = pygame.sprite.Group()
     grupo_sprite_balas = pygame.sprite.Group()
@@ -88,12 +83,12 @@ def start_the_game():
         colisiones_nave_enemigos = pygame.sprite.spritecollideany(nave, grupo_sprite_enemigos)
         if colisiones_nave_enemigos:
             # Eliminar la nave al colisionar con el enemigo
-            nave.kill()
+            nave.vida -= 1
 
         # Detectar colisiones entre balas y enemigos
         colisiones_balas_enemigos = pygame.sprite.groupcollide(grupo_sprite_balas, grupo_sprite_enemigos, True, True)
         for bala, enemigos in colisiones_balas_enemigos.items():
-            puntuacion += len(enemigos) * 100
+            puntuacion += len(enemigos) * 50
 
         # Si nos eliminan, acaba la partida automaticamente
         if nave.vida <= 0:
@@ -107,6 +102,7 @@ def start_the_game():
             # Creamos el enemigo y lo añadimos a los grupos
             enemigo = rescElementos.Enemigo((cordX, cordY))
             grupo_sprite_todos.add(enemigo)
+            grupo_sprite_enemigos.add(enemigo)
             # Actualizamos el momento del ultimo enemigo creado
             ultimo_enemigo_creado = momento_actual_enemigos
             

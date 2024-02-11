@@ -102,7 +102,7 @@ class Enemigo(pygame.sprite.Sprite):
         if bala_colision:
             self.kill()
             bala_colision.kill()
-            print("Vida del enemigo:", self.vida)
+            # print("Vida del enemigo:", self.vida)
             if self.vida <= 0:
                 self.kill()
 
