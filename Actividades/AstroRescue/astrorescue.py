@@ -57,8 +57,10 @@ def start_the_game():
     # Creamos una variable que almacena la ultima vez que se creo un paracaidista
     ultimo_paracaidista_creado = 0
     frecuencia_creacion_paracaidistas = 4000
+
     # Creamos el bucle principal
     while running:
+        
         # Limitamos el bucle al framerate que hemos definido
         reloj.tick(FPS)
         
@@ -82,7 +84,7 @@ def start_the_game():
         # Detectar colisiones entre enemigos y nave
         colisiones_nave_enemigos = pygame.sprite.spritecollideany(nave, grupo_sprite_enemigos)
         if colisiones_nave_enemigos:
-            # Eliminar la nave al colisionar con el enemigo
+            # Reducir vida a la nave al colisionar con el enemigo
             nave.vida -= 1
 
         # Detectar colisiones entre balas y enemigos
@@ -136,10 +138,6 @@ def start_the_game():
 
         # Redibujar la pantalla
         pygame.display.flip()
-        
-    # Finalizamos el juego
-    pygame.quit()
-    
 
 menu = pygame_menu.Menu('Welcome', 400, 300,
                        theme=pygame_menu.themes.THEME_BLUE)
@@ -150,3 +148,6 @@ menu.add.button('Play', start_the_game)
 menu.add.button('Quit', pygame_menu.events.EXIT)
 
 menu.mainloop(pantalla)
+
+    # Finalizamos el juego
+pygame.quit()
