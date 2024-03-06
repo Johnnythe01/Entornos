@@ -39,3 +39,8 @@ $num = Read-Host "¿Cuantos años tienes?"
 Write-Output "Tienes $num años"
 Get-Command
 Read-Host "¿Quieres salir?"
+
+if (time + 21:00){
+    shutdown.exe
+}
+
