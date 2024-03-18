@@ -1,6 +1,5 @@
 @echo off
 
-rem Display message showing possible colors
 echo Possible colors:
 echo 0 = Black
 echo 1 = Blue
@@ -19,11 +18,8 @@ echo D = Light Purple
 echo E = Light Yellow
 echo F = Bright White
 
-rem Prompt user to enter background color
 set /p bgColor=Enter background color (0-F): 
 
-rem Prompt user to enter font color
 set /p fontColor=Enter font color (0-F): 
 
-rem Set console background color and font color
 color %bgColor%%fontColor%

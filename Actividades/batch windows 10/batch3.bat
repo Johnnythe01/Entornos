@@ -1,13 +1,13 @@
 @echo off
 
-:menu
+:menu (
 cls
 echo Menu:
 echo 1. Show computer name
 echo 2. Show current user
 echo 3. Show current date and time
 echo 4. Exit
-
+)
 set /p choice=Enter your choice: 
 
 if "%choice%"=="1" goto showComputerName
