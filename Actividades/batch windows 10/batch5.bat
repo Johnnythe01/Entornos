@@ -11,7 +11,7 @@ echo [3] Disk Cleanup
 echo [4] Disk Defragment
 echo [5] Exit
 
-set /p choice=Enter your choice: 
+set /p choice=Enter your choice:
 
 if "%choice%"=="1" goto delete_cookies
 if "%choice%"=="2" goto delete_temp_files
@@ -21,14 +21,14 @@ if "%choice%"=="5" goto end
 
 :delete_cookies
 echo Deleting Internet Cookies...
-del /q /s "%userprofile%\AppData\Local\Microsoft\Windows\INetCookies\*"
+del /q /s "%userprofile%\AppData\Roaming\Opera Software\Opera GX Stable\Cookies"
 echo Internet Cookies deleted.
 pause
 goto start
 
 :delete_temp_files
 echo Deleting Temporary Internet Files...
-del /q /s "%userprofile%\AppData\Local\Microsoft\Windows\INetCache\*"
+del /q /s "%userprofile%\AppData\Local\Opera Software\Opera GX Stable\Cache\*"
 echo Temporary Internet Files deleted.
 pause
 goto start
