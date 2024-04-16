@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../Gradle"
+		},
+		{
+			"path": "../../../Lenguajes"
+		},
+		{
+			"path": "../../../Programacion"
+		}
+	],
+	"settings": {
+		"java.compile.nullAnalysis.mode": "automatic"
+	}
+}
