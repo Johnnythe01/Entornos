@@ -1,0 +1,11 @@
+#/bin/bash
+
+for i in {0..9}; do
+  mkdir ~/PC$i
+  lshw -short > ~/PC$i/pcstatus.txt
+done
+
+EOF
+
+chmod +x create_folders.sh
+./create_folders.sh
